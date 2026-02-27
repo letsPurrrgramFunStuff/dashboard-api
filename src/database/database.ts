@@ -8,11 +8,20 @@ import { seedDatabase } from "./seed";
 let pool: Pool;
 
 export const registerDatabase = async () => {
-  if (!process.env.DATABASE_URL) {
-    throw new Error("DATABASE_URL environment variable is required");
+  const { DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD } = process.env;
+  if (!DB_HOST || !DB_NAME || !DB_USER || !DB_PASSWORD) {
+    throw new Error(
+      "DB_HOST, DB_NAME, DB_USER and DB_PASSWORD environment variables are required",
+    );
   }
 
-  pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  pool = new Pool({
+    host: DB_HOST,
+    port: DB_PORT ? parseInt(DB_PORT, 10) : 5432,
+    database: DB_NAME,
+    user: DB_USER,
+    password: DB_PASSWORD,
+  });
 
   const client = await pool.connect();
   client.release();

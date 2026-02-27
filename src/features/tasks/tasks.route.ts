@@ -20,6 +20,7 @@ const TaskQuery = Type.Object({
   pageSize: Type.Optional(Type.Number({ default: 25 })),
   propertyId: Type.Optional(Type.Number()),
   status: Type.Optional(Type.String()),
+  priority: Type.Optional(Type.String()),
   assigneeId: Type.Optional(Type.Number()),
   category: Type.Optional(Type.String()),
 });
@@ -44,6 +45,7 @@ export const tasksRoute: FastifyPluginAsync = async (fastify) => {
         pageSize?: number;
         propertyId?: number;
         status?: string;
+        priority?: string;
         assigneeId?: number;
         category?: string;
       };
@@ -58,6 +60,7 @@ export const tasksRoute: FastifyPluginAsync = async (fastify) => {
           ? [eq(schema.tasks.propertyId, q.propertyId)]
           : []),
         ...(q.status ? [sql`${schema.tasks.status} = ${q.status}`] : []),
+        ...(q.priority ? [sql`${schema.tasks.priority} = ${q.priority}`] : []),
         ...(q.assigneeId != null
           ? [eq(schema.tasks.assigneeId, q.assigneeId)]
           : []),

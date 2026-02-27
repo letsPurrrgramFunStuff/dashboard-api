@@ -25,11 +25,14 @@ const weightedRiskScore = () => {
     return faker.number.float({ min: 30, max: 54.9, fractionDigits: 1 });
   return faker.number.float({ min: 0, max: 29.9, fractionDigits: 1 });
 };
-
 const NYC_BOROUGHS = [
   {
     city: "New York",
     state: "NY",
+    latMin: 40.7,
+    latMax: 40.88,
+    lngMin: -74.02,
+    lngMax: -73.905,
     zip: () =>
       faker.helpers.arrayElement([
         "10001",
@@ -74,6 +77,10 @@ const NYC_BOROUGHS = [
   {
     city: "Brooklyn",
     state: "NY",
+    latMin: 40.57,
+    latMax: 40.739,
+    lngMin: -74.042,
+    lngMax: -73.833,
     zip: () =>
       faker.helpers.arrayElement([
         "11201",
@@ -118,6 +125,10 @@ const NYC_BOROUGHS = [
   {
     city: "Queens",
     state: "NY",
+    latMin: 40.54,
+    latMax: 40.8,
+    lngMin: -73.962,
+    lngMax: -73.7,
     zip: () =>
       faker.helpers.arrayElement([
         "11354",
@@ -171,6 +182,10 @@ const NYC_BOROUGHS = [
   {
     city: "Bronx",
     state: "NY",
+    latMin: 40.785,
+    latMax: 40.918,
+    lngMin: -73.934,
+    lngMax: -73.748,
     zip: () =>
       faker.helpers.arrayElement([
         "10451",
@@ -203,6 +218,10 @@ const NYC_BOROUGHS = [
   {
     city: "Staten Island",
     state: "NY",
+    latMin: 40.495,
+    latMax: 40.651,
+    lngMin: -74.259,
+    lngMax: -74.034,
     zip: () =>
       faker.helpers.arrayElement([
         "10301",
@@ -392,13 +411,13 @@ export async function seedProperty(
       block: faker.string.numeric(4),
       lot: faker.string.numeric(4),
       latitude: faker.number.float({
-        min: 40.49,
-        max: 40.92,
+        min: borough.latMin,
+        max: borough.latMax,
         fractionDigits: 6,
       }),
       longitude: faker.number.float({
-        min: -74.26,
-        max: -73.7,
+        min: borough.lngMin,
+        max: borough.lngMax,
         fractionDigits: 6,
       }),
       propertyType: type,

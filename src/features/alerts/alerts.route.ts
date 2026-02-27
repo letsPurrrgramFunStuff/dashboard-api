@@ -11,6 +11,7 @@ export const alertsRoute: FastifyPluginAsync = async (fastify) => {
     pageSize: Type.Optional(Type.Number({ default: 25 })),
     propertyId: Type.Optional(Type.Number()),
     alertType: Type.Optional(Type.String()),
+    severity: Type.Optional(Type.String()),
     isRead: Type.Optional(Type.Boolean()),
   });
   fastify.get(
@@ -31,6 +32,7 @@ export const alertsRoute: FastifyPluginAsync = async (fastify) => {
         pageSize?: number;
         propertyId?: number;
         alertType?: string;
+        severity?: string;
         isRead?: boolean;
       };
       const page = Math.max(1, q.page ?? 1);
@@ -44,6 +46,14 @@ export const alertsRoute: FastifyPluginAsync = async (fastify) => {
           ? [eq(schema.alerts.propertyId, q.propertyId)]
           : []),
         ...(q.isRead != null ? [eq(schema.alerts.isRead, q.isRead)] : []),
+        ...(q.severity
+          ? [
+              eq(
+                schema.alerts.severity,
+                q.severity as "low" | "medium" | "high" | "critical",
+              ),
+            ]
+          : []),
       ];
 
       const [data, [{ total }], [{ unreadCount }]] = await Promise.all([
